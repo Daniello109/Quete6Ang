@@ -1,0 +1,46 @@
+
+
+<form class="form-group" [formGroup]="searchform" (ngSubmit)="searchform.valid && onSubmit()"> <!-- a priori, 1 formgroup = 1 formulaire, se pueden meter unos dentro de otros, pero teóricamente, no es buena práctica, aunque sea muy común en Angular. el método onSubmit viene del componente-->
+    <div formGroupName="infos">
+        <div>
+            <label for="indentifiant">Identifiant : 
+            <input id="identifiant" type="text" formControlName="identifiant"> <!-- Le binding con el TS se hace via el formcontrolname, en cada input -->
+            </label>  
+        </div>    
+        <div>
+            <label for="titre">Titre :</label> 
+            <input id="titre" type="text" formControlName="titre">
+        </div>
+        <div *ngIf="searchform.get('infos')?.hasError('isRequired')" >
+                Titre ou identifiant doit être renseigné <!-- ngif no funciona por la linea superior, seguramente-->
+            </div>
+    </div>
+    
+    <div>
+        <label>Type:</label>
+        <select formControlName="type">
+            <option value = "serie">serie</option>
+            <option value = "film">film</option>
+            <option value = "episode">episode</option>
+        </select>
+    </div>
+    
+    <div>
+        <label for="anneeDeSortie">Année de sortie : </label>
+        <input id="anneeDeSortie" type="number" formControlName="anneeDeSortie">
+        <div *ngIf="searchform.get('anneeDeSortie')?.hasError('min')">
+            L'année de sortie doit être comprise entre {{minYear}} et {{maxYear}} <!-- ngif no funciona por la linea superior, seguramente-->
+        </div>
+    </div>
+    
+    <div>
+        <label>fiche:</label>
+        <select formControlName="fiche">
+            <option value = "complete">complète</option>
+            <option value = "courte">courte</option>
+        </select>
+    </div>
+
+    <p>Complete the form to enable button.</p>
+    <button type="submit"[disabled]="!searchform.valid">Submit</button>
+</form>
